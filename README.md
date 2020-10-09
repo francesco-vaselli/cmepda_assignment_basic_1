@@ -2,6 +2,8 @@
 My personal take on the first assignment for the cmepda course
 
 As a reminder, here's the request for the assignment:
+
+
 Module: basic Python
 Assignment #1 (September 30, 2019)
 

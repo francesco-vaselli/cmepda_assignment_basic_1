@@ -33,6 +33,9 @@ def process(file_path, bool):
     for ch, num in char_dict.items():
         print(f"{ch} -> {num/num_letters:.3%}")
 
+    if bool == True:
+        print('yhea')
+
 
 #if the file is executed alone, __name__ == "__main__", otherwise it's not
 if __name__ == "__main__":
@@ -43,4 +46,4 @@ if __name__ == "__main__":
     parser.add_argument('-histogram', action='store_true',
                     help='Print histogram of the frequencies')
     args = parser.parse_args()
-    process(args.infile, parser.histogram)
+    process(args.infile, args.histogram)

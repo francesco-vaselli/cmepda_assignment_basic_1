@@ -8,7 +8,7 @@ import string
 
 logging.basicConfig(level=logging.DEBUG)
 
-def process(file_path):
+def process(file_path, bool):
     """read text file and compile statistics
     """
     start_time = time.time()
@@ -20,7 +20,6 @@ def process(file_path):
     num_chars = len(text)
     logging.info("Done. Number of characters is %d", num_chars)
 
-    #char_dict = {chr(x): 0 for x in range(ord('a'), ord('z')+1)}
     char_dict = {ch: 0 for ch in string.ascii_lowercase}
 
     elapsed_time = time.time() - start_time
@@ -29,12 +28,7 @@ def process(file_path):
         ch = ch.lower()
         if ch in char_dict:
             char_dict[ch] += 1
-        """
-        try:
-            char_dict[ch.lower()] += 1
-        except KeyError:
-            pass
-            """
+
     num_letters = sum(char_dict.values())
     for ch, num in char_dict.items():
         print(f"{ch} -> {num/num_letters:.3%}")
@@ -43,6 +37,10 @@ def process(file_path):
 #if the file is executed alone, __name__ == "__main__", otherwise it's not
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    #add file path as positional argument
     parser.add_argument('infile', type=str, help='Path to current file')
+    #add optional argument for printing histogram
+    parser.add_argument('-histogram', action='store_true',
+                    help='Print histogram of the frequencies')
     args = parser.parse_args()
-    process(args.infile)
+    process(args.infile, parser.histogram)

@@ -4,9 +4,10 @@ import argparse
 import logging
 import time
 import string
+import matplotlib.pyplot as plt
 
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.WARNING)
 
 def process(file_path, bool):
     """read text file and compile statistics
@@ -16,25 +17,38 @@ def process(file_path, bool):
     #with keyword and context manager
     with open(file_path) as input_file:
         text = input_file.read()
-        print(type(text))
     num_chars = len(text)
     logging.info("Done. Number of characters is %d", num_chars)
 
     char_dict = {ch: 0 for ch in string.ascii_lowercase}
 
-    elapsed_time = time.time() - start_time
-    logging.info("Done in %.3f seconds", elapsed_time)
     for ch in text:
         ch = ch.lower()
         if ch in char_dict:
             char_dict[ch] += 1
 
     num_letters = sum(char_dict.values())
-    for ch, num in char_dict.items():
-        print(f"{ch} -> {num/num_letters:.3%}")
+    char_rdict = {ch: (num/num_letters)*100 for ch, num in char_dict.items()}
+    for ch, num in char_rdict.items():
+        print(f"{ch} -> {num:.3f}")
 
-    if bool == True:
-        print('yhea')
+    if bool == False:
+        elapsed_time = time.time() - start_time
+        print(f"Done in {elapsed_time:.3f} seconds")
+
+    else:
+        fig = plt.figure()
+        ax = plt.axes()
+        plt.bar(char_rdict.keys(), char_rdict.values())
+        plt.title('Relative frequencies of letters in text')
+        plt.ylabel('Relative frequencies')
+        ax.minorticks_on()
+        ax.tick_params(axis='x', which='minor', bottom=False)
+
+        elapsed_time = time.time() - start_time
+        print(f"Done in {elapsed_time:.3f} seconds")
+        plt.show()
+
 
 
 #if the file is executed alone, __name__ == "__main__", otherwise it's not

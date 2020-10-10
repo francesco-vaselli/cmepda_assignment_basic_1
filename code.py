@@ -21,16 +21,17 @@ def process(file_path, bool):
     logging.info("Done. Number of characters is %d", num_chars)
 
     char_dict = {ch: 0 for ch in string.ascii_lowercase}
-
+    #store counters as dictonary values
     for ch in text:
         ch = ch.lower()
         if ch in char_dict:
             char_dict[ch] += 1
 
     num_letters = sum(char_dict.values())
+    #create dictonary with relative values
     char_rdict = {ch: (num/num_letters)*100 for ch, num in char_dict.items()}
     for ch, num in char_rdict.items():
-        print(f"{ch} -> {num:.3f}")
+        print(f"{ch} -> {num:.3f}%")
 
     if bool == False:
         elapsed_time = time.time() - start_time
@@ -41,8 +42,9 @@ def process(file_path, bool):
         ax = plt.axes()
         plt.bar(char_rdict.keys(), char_rdict.values())
         plt.title('Relative frequencies of letters in text')
-        plt.ylabel('Relative frequencies')
+        plt.ylabel('Relative frequencies (%)')
         ax.minorticks_on()
+        #remove minorticks from x-axis
         ax.tick_params(axis='x', which='minor', bottom=False)
 
         elapsed_time = time.time() - start_time
@@ -54,8 +56,13 @@ def process(file_path, bool):
 #if the file is executed alone, __name__ == "__main__", otherwise it's not
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    #add file path as positional argument
-    parser.add_argument('infile', type=str, help='Path to current file')
+    #add file path as positional argument,
+    #with help message summarizing the usage
+    help_message = """Insert path to text file: this program
+                        is going to print  the relative frequence of each letter
+                        of the alphabet in the book, without distinguishing
+                        between lower and upper case."""
+    parser.add_argument('infile', type=str, help=help_message)
     #add optional argument for printing histogram
     parser.add_argument('-histogram', action='store_true',
                     help='Print histogram of the frequencies')

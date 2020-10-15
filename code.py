@@ -17,8 +17,6 @@ def process(file_path, hist_bool, stats_bool):
     #open file with keyword and context manager
     with open(file_path, 'r') as input_file:
         try:
-            #reset counter to beginning of file
-            input_file.seek(0)
             text = input_file.read()
             #work on statistics if required
             if stats_bool is True:

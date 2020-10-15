@@ -16,13 +16,7 @@ def process(file_path, hist_bool, stats_bool):
     logging.info("Reading input file %s...", file_path)
     #open file with keyword and context manager
     with open(file_path, 'r') as input_file:
-        #set pointer at the end of file, then check current postion to assess
-        #whether the file is empty (all without actually reading!!!)
-        input_file.seek(0, 2)
-        if input_file.tell() == 0:
-            print('FILE IS EMPTY')
-            return
-        else:
+        try:
             #reset counter to beginning of file
             input_file.seek(0)
             text = input_file.read()
@@ -34,6 +28,9 @@ def process(file_path, hist_bool, stats_bool):
                 num_words = len(text.split())
                 logging.info(num_words)
                 logging.info(num_lines)
+        except OSError as e:
+            print('Cannot read file!!!\n{}'.format(e))
+            return
 
 
     logging.info("Done.")
